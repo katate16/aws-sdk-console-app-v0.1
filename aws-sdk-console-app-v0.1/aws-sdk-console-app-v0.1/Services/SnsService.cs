@@ -19,11 +19,11 @@ namespace aws_sdk_console_app_v0._1.Services {
                 Name = topicName
             };
 
-            try{
+            try {
                 return await _notificationService.CreateTopicAsync(request);
             }
-            catch(Exception ex) {
-                Console.WriteLine($"Failed to create Topic : Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
+            catch (Exception ex) {
+                Console.WriteLine($"Failed to create Topic {topicName} : Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
                 return new CreateTopicResponse {
                     HttpStatusCode = System.Net.HttpStatusCode.InternalServerError
                 };
@@ -38,8 +38,8 @@ namespace aws_sdk_console_app_v0._1.Services {
             try {
                 return await _notificationService.DeleteTopicAsync(request);
             }
-            catch(Exception ex) {
-                Console.WriteLine($"Failed to delete Topic : Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
+            catch (Exception ex) {
+                Console.WriteLine($"Failed to delete Topic {topicArn}: Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
                 return new DeleteTopicResponse {
                     HttpStatusCode = System.Net.HttpStatusCode.InternalServerError
                 };
@@ -47,9 +47,9 @@ namespace aws_sdk_console_app_v0._1.Services {
         }
 
         public static async Task<PublishResponse> PublishToTopicAsync(string topicArn, string message) {
-            var request = new PublishRequest() { 
-                Message = message, 
-                TopicArn = topicArn 
+            var request = new PublishRequest() {
+                Message = message,
+                TopicArn = topicArn
             };
 
             try {
@@ -61,11 +61,10 @@ namespace aws_sdk_console_app_v0._1.Services {
                     HttpStatusCode = System.Net.HttpStatusCode.InternalServerError
                 };
             }
-
         }
 
         public static async Task<SubscribeResponse> SubscribeToTopicAsync(string topicArn) {
-            var request = new SubscribeRequest() { 
+            var request = new SubscribeRequest() {
                 TopicArn = topicArn,
             };
 
@@ -73,12 +72,12 @@ namespace aws_sdk_console_app_v0._1.Services {
                 return await _notificationService.SubscribeAsync(request);
             }
             catch (Exception ex) {
-                Console.WriteLine($"Failed to publish subscribe to Topic ({topicArn}) : Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
+                Console.WriteLine($"Failed to subscribe to Topic ({topicArn}) : Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
                 return new SubscribeResponse {
                     HttpStatusCode = System.Net.HttpStatusCode.InternalServerError
                 };
             }
-
         }
     }
 }
+
