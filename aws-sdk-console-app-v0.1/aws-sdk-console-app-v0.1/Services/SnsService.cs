@@ -63,5 +63,22 @@ namespace aws_sdk_console_app_v0._1.Services {
             }
 
         }
+
+        public static async Task<SubscribeResponse> SubscribeToTopicAsync(string topicArn) {
+            var request = new SubscribeRequest() { 
+                TopicArn = topicArn,
+            };
+
+            try {
+                return await _notificationService.SubscribeAsync(request);
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Failed to publish subscribe to Topic ({topicArn}) : Error Type:[{ex.GetType()}] Message:[{ex.Message}]");
+                return new SubscribeResponse {
+                    HttpStatusCode = System.Net.HttpStatusCode.InternalServerError
+                };
+            }
+
+        }
     }
 }
