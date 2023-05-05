@@ -6,4 +6,8 @@
     <RootNamespace>aws_sdk_console_app_v0._1</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.7.106.32" />
+  </ItemGroup>
+
 </Project>
