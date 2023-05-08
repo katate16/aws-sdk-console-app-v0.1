@@ -4,9 +4,9 @@ using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 
 namespace aws_sdk_console_app_v0._1.Services {
-    public class SnsService {
-        private static IAmazonSimpleNotificationService _notificationService;
-        private static SqsService _sqsService;
+    public class SnsService : ISnsService{
+        private readonly IAmazonSimpleNotificationService _notificationService;
+        private readonly SqsService _sqsService;
 
         public SnsService(IAmazonSimpleNotificationService notificationService, SqsService sqsService) {
             _notificationService = notificationService;
@@ -20,7 +20,7 @@ namespace aws_sdk_console_app_v0._1.Services {
         /// </returns>
         /// </summary>
         /// <param name="topicName">The Topic's name.</param>
-        public static async Task<CreateTopicResponse> CreateSnsTopicAsync(string topicName) {
+        public async Task<CreateTopicResponse> CreateSnsTopicAsync(string topicName) {
             var request = new CreateTopicRequest() {
                 Name = topicName
             };
@@ -43,7 +43,7 @@ namespace aws_sdk_console_app_v0._1.Services {
         /// </returns>
         /// </summary>
         /// <param name="topicArn">The Topic's ARN.</param>
-        public static async Task<DeleteTopicResponse> DeleteTopicAsync(string topicArn) {
+        public async Task<DeleteTopicResponse> DeleteTopicAsync(string topicArn) {
             var request = new DeleteTopicRequest() {
                 TopicArn = topicArn
             };
@@ -67,7 +67,7 @@ namespace aws_sdk_console_app_v0._1.Services {
         /// </summary>
         /// <param name="topicArn">The Topic's ARN.</param>
         /// <param name="message">The Message to be published.</param>
-        public static async Task<PublishResponse> PublishToTopicAsync(string topicArn, string message) {
+        public async Task<PublishResponse> PublishToTopicAsync(string topicArn, string message) {
             var request = new PublishRequest() {
                 Message = message,
                 TopicArn = topicArn
@@ -91,7 +91,7 @@ namespace aws_sdk_console_app_v0._1.Services {
         /// </returns>
         /// </summary>
         /// <param name="topicArn">The Topic's ARN.</param>
-        public static async Task<SubscribeResponse> SubscribeToTopicAsync(string topicArn) {
+        public async Task<SubscribeResponse> SubscribeToTopicAsync(string topicArn) {
             var request = new SubscribeRequest() {
                 TopicArn = topicArn,
             };
@@ -115,8 +115,8 @@ namespace aws_sdk_console_app_v0._1.Services {
         /// </summary>
         /// <param name="sqsQueueUrl">The SQS Queue Url.</param>
         /// <param name="topicArn">The Topic's ARN.</param>
-        public static async Task<SubscribeResponse> SubscribeQueue(string sqsQueueUrl, string topicArn) {
-            var queueArn = await SqsService.GetQueueArn(sqsQueueUrl);
+        public async Task<SubscribeResponse> SubscribeQueueAsync(string sqsQueueUrl, string topicArn) {
+            var queueArn = await _sqsService.GetQueueArn(sqsQueueUrl);
 
             var request = new SubscribeRequest() {
                 Endpoint = queueArn
